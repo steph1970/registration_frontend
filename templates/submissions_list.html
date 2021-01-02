@@ -1,0 +1,30 @@
+<html>
+
+<body>
+
+<hr/>
+<a href='../'>Welcome screen</a>
+<hr />
+<h1>All submissions</h1>
+
+<table>
+<th width="30px"></th>
+<th width="150px"></th>
+<th width="150px"></th>
+<th width="150px"></th>
+<th width="150px"></th>
+<th width="150px"></th>
+{% for submission in submissions %}
+<tr>
+    <td>{{ submission.id }}</td>
+    <td><a href="./submissions/{{submission.id}}">{{ submission.postulant_email }}</a></td>
+    <td>{{ submission.postulant_firstname }}</td>
+    <td>{{ submission.postulant_middlename }}</td>
+    <td>{{ submission.postulant_lastname }}</td>
+    <td>{{ submission.is_validated }}</td>
+</tr>
+{% endfor %}
+</table>
+</body>
+
+</html>

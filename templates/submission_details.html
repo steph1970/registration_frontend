@@ -1,0 +1,78 @@
+<html>
+<head>
+    <style>
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"  crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        function validate_submission(){
+            document.getElementById('pdf_icon').src='../static/pdf_red.png';
+            document.getElementById('pdf_icon').style = 'animation: blink 1s; animation-iteration-count: infinite';
+            socket.emit('generate_registration_invoice', '{{ submission.id }}');
+        };
+        socket.on('invoice_created', function(){
+            document.getElementById('pdf_icon').style = '';
+        });
+        
+    </script>
+</head>
+<body>
+
+<hr/>
+<a href="../submissions">All submissions</a>
+<a href='../'>Welcome screen</a>
+<hr />
+
+<h1>Sumbission details - {{ submission.id }}</h1>
+
+{% if submission.is_validated %}
+    <img id='pdf_icon' src='../static/pdf_red.png'/>
+{% else %}
+    <img id='pdf_icon' src='../static/pdf_black.png'/>
+{% endif %}
+
+<table>
+    <thead>
+        <th width='150px'></th>
+        <th></th>
+    </thead>
+    <tr>
+        <td>Email</td>
+        <td>{{ submission.postulant_email }}</td>
+    </tr>
+    <tr>
+        <td>Firstname</td>
+        <td>{{ submission.postulant_fisrtname }}</td>
+    </tr>
+    <tr>
+        <td>Middlename</td>
+        <td>{{ submission.postulant_middlename }}</td>
+    </tr>
+    <tr>
+        <td>Lastname</td>
+        <td>{{ submission.postulant_lastname }}</td>
+    </tr>
+    <tr>
+        <td>Validated</td>
+        <td>{{ submission.is_validated }}</td>
+    </tr>
+</table>
+
+{% if submission.is_validated %}
+    
+{% else %}
+    <button name='Validate' onclick="validate_submission()">Validate</button>
+{% endif %}
+</body>
+</html>
